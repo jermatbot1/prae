@@ -3,7 +3,12 @@
     Created on : 27/10/2026, 5:08:43 p. m.
     Author     : Jermat
 --%>
-
+<%
+    if (session.getAttribute("id_usuario") == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 <%@page contentType="gestion-usuario.jsp" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 

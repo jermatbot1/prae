@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    if (session.getAttribute("id_usuario") == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,13 +32,15 @@
                 </h1>
             </div>
             <div class="bg-white text-dark border border-dark px-3 py-1 d-flex align-items-center gap-2 rounded shadow-sm dropdown">
-                <!-- Muestra el nombre del usuario logueado almacenado en HttpSession -->
                 <a href="#" class="text-dark text-decoration-none dropdown-toggle small fw-medium" data-bs-toggle="dropdown" aria-expanded="false">
                     Perfil: ${sessionScope.nombres != null ? sessionScope.nombres : 'Invitado'}
                 </a>
-                <!-- Menú desplegable para la acción de cierre de sesión  -->   
                 <ul class="dropdown-menu dropdown-menu-end">
-                      <li><a class="dropdown-item text-danger fw-bold" href="LogoutServlet">Cerrar Sesión</a></li>
+                    <li>
+                        <form action="${pageContext.request.contextPath}/LogoutServlet" method="POST" class="m-0">
+                            <button type="submit" class="dropdown-item text-danger fw-bold">Cerrar Sesión</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
 

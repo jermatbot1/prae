@@ -34,7 +34,7 @@ public class LogoutServlet extends HttpServlet {
         }
         
         // Redirigir de regreso a la página principal de inicio de sesión a index.jsp
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(request.getContextPath () + "/login.jsp");
     }
 
     @Override

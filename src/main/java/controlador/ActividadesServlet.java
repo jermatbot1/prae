@@ -1,3 +1,6 @@
+package controlador;
+
+
 import modelo.conexion;
 import java.io.IOException;
 import java.sql.Connection;
@@ -144,7 +147,7 @@ public class ActividadesServlet extends HttpServlet {
                 pst.executeUpdate();
             }
         }
-        response.sendRedirect("ActividadesServlet?accion=listar");
+        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
     }
 
     private void editarActividad(HttpServletRequest request, HttpServletResponse response) 
@@ -185,7 +188,7 @@ public class ActividadesServlet extends HttpServlet {
                 pst.executeUpdate();
             }
         }
-        response.sendRedirect("ActividadesServlet?accion=listar");
+        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
     }
 
     private void eliminarActividad(HttpServletRequest request, HttpServletResponse response) 
@@ -205,6 +208,6 @@ public class ActividadesServlet extends HttpServlet {
                 pst.executeUpdate();
             }
         }
-        response.sendRedirect("ActividadesServlet?accion=listar");
+        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");;
     }
 }

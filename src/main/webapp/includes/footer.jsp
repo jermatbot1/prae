@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-12 col-md-4 text-center text-md-end">
                     <h6 class="text-uppercase fw-bold mb-2 text-white">SystemaPRAE</h6>
-                    <p class="small text-secondary mb-1">Versión 1.0.0 - Fase de Análisis</p>
+                    <p class="small text-secondary mb-1">Versión 1.0.0 - Fase de Desarrollo</p>
                     <p class="small text-secondary mb-0">Desarrollado por: Cristian René Durán Jaimes</p>
                 </div>
             </div>

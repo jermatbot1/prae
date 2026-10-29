@@ -52,10 +52,10 @@ public class LoginServlet extends HttpServlet {
                         session.setAttribute("id_rol", rs.getInt("id_rol"));
                         
                         // Redirigir al Dashboard institucional según el análisis de pantallas
-                        response.sendRedirect("dashboard.jsp");
+                        response.sendRedirect(request.getContextPath () + "/dashboard.jsp");
                     } else {
                         // Credenciales incorrectas: Redirigir de vuelta al index con error
-                        response.sendRedirect("index.jsp?error=CredencialesInvalidas");
+                        response.sendRedirect(request.getContextPath () + "login.jsp?error=CredencialesInvalidas");
                     }
                 }
             }

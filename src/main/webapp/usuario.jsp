@@ -1,5 +1,4 @@
-
-<%@ page contentType="usuario.jsp" language="java" %>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 
@@ -7,7 +6,7 @@
 
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Gestión de Usuarios</h2>
+        <h2 class="fw-bold">GestiÃ³n de Usuarios</h2>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalRegistroUsuario">
             + Nuevo Usuario
         </button>
@@ -66,11 +65,11 @@
                         <input type="text" name="nombre" id="nombre" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="correo" class="form-label">Correo Electrónico</label>
+                        <label for="correo" class="form-label">Correo ElectrÃ³nico</label>
                         <input type="email" name="correo" id="correo" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
+                        <label for="password" class="form-label">ContraseÃ±a</label>
                         <input type="password" name="password" id="password" class="form-control" required>
                     </div>
                     <div class="mb-3">

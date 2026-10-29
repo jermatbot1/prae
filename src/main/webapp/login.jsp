@@ -4,7 +4,7 @@
     Author     : Jermat
 --%>
 
-<%@page contentType="login.jsp" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -39,7 +39,12 @@
 
             <div class="card rounded-0 shadow-sm" style="border: 2px solid #000; background-color: #f1f1f1;">
                 <div class="card-body p-4 px-md-5">
-                    
+                    <% if (request.getParameter("error") != null) { %>
+                    <div class="alert alert-danger rounded-0 small py-2">Correo o contraseña incorrectos.</div>
+                    <% } %>
+                    <% if (request.getParameter("registro") != null) { %>
+                    <div class="alert alert-success rounded-0 small py-2">Registro exitoso. Ya puedes iniciar sesión.</div>
+                    <% }%>
                     <form action="LoginServlet" method="POST">
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <label for="email" class="form-label mb-0 small fw-bold text-end" style="width: 70px;">Email:</label>
@@ -71,6 +76,7 @@
                             </span>
                         </div>
                     </form>
+                    
 
                 </div>
             </div>

@@ -1,6 +1,9 @@
-
-
-
+<%
+    if (session.getAttribute("id_usuario") == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -127,7 +130,7 @@
                                 
                             </c:forEach>
                         </c:when>
-                        <c:otherwise>
+                    <c:otherwise>
                             <!-- CORREGIDO: Apunta a ActividadesServlet en plural y usa param 'accion' -->
                             <a href="${pageContext.request.contextPath}/ActividadesServlet?accion=listar&id=1" class="text-decoration-none d-flex flex-column gap-1">
                                 <div class="evidencia-box d-flex align-items-center justify-content-center">
