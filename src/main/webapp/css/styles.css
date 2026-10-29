@@ -1,0 +1,131 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 27/10/2026, 4:49:40 p. m.
+    Author     : Jermat
+*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    user-select: none;
+}
+
+/* Encabezado Verde Principal */
+.navbar-prae {
+    background-color: #0E8C2F !important;
+    border-bottom: 2px solid #000000;
+}
+
+/* Contenedor del Logo en Cruz (Balsamiq Style) */
+.logo-placeholder {
+    width: 65px;
+    height: 65px;
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    position: relative;
+}
+
+/* Botones con Estilo de Prototipo (Sombra Sólida Negra) */
+.btn-balsamiq {
+    border: 1px solid #000000 !important;
+    font-weight: bold;
+    text-align: left;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1) !important;
+}
+
+.btn-balsamiq:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1) !important;
+}
+
+/* Componente del Calendario Matricial */
+.calendario-container {
+    border: 2px solid #0E8C2F !important;
+    background-color: #ffffff;
+}
+
+.calendario-header {
+    border-bottom: 2px solid #0E8C2F !important;
+}
+
+.calendario-celda {
+    height: 85px;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    padding: 6px;
+}
+
+/* Tarjetas de Evidencias (Columna Derecha) */
+.evidencia-box {
+    width: 100%;
+    height: 110px;
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    position: relative;
+}
+
+.btn-success.btn-balsamiq {
+    background-color: #0E8C2F !important; /* Tu verde institucional exacto */
+    border-color: #000000 !important;     /* Mantiene el borde negro del prototipo */
+    color: #ffffff !important;            /* Texto en blanco para que contraste */
+}
+
+/* Efecto visual cuando el usuario pasa el mouse por encima (Hover) */
+.btn-success.btn-balsamiq:hover {
+    background-color: #0c7a29 !important; /* Un verde un poco más oscuro al pasar el mouse */
+    color: #ffffff !important;
+}
+/* ======================================================== */
+/* ESTILOS DEL FOOTER                                       */
+/* ======================================================== */
+
+/* Garantiza que el footer se empuje siempre al fondo de la pantalla */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Efecto al pasar el mouse por los enlaces del footer */
+.hover-verde {
+    transition: color 0.2s ease-in-out;
+}
+
+.hover-verde:hover {
+    color: #0E8C2F !important;
+}
+
+/* Clase exclusiva para el botón Biblioteca (Azul Marino Normalista) */
+.btn-balsamiq.btn-biblioteca-marino {
+    background-color: #0B2F64 !important; /* Azul marino institucional */
+    border-color: #000000 !important;     /* Mantiene el borde negro del prototipo */
+    color: #ffffff !important;            /* Texto en blanco para excelente contraste */
+}
+
+/* Efecto al pasar el mouse por encima (Hover) */
+.btn-balsamiq.btn-biblioteca-marino:hover {
+    background-color: #08224a !important; /* Un azul marino un poco más oscuro */
+    color: #ffffff !important;
+}
+/* Al pasar el mouse */
+.evento-item:hover .evidencia-box {
+    border-color: #0E8C2F !important;
+}
+
+/* Mientras se presiona */
+.evento-item:active .evidencia-box {
+    transform: scale(0.97);
+}
+
+/* Evento seleccionado (lo agrega el JavaScript) */
+.evento-seleccionado .evidencia-box {
+    border: 4px solid #0E8C2F !important;
+    box-shadow: 0 0 0 3px rgba(14, 140, 47, 0.35);
+}
+.evento-seleccionado span.rounded {
+    background-color: #075c1e !important;
+}
