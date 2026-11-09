@@ -15,21 +15,25 @@
         
         <!-- BARRA LATERAL IZQUIERDA: ACCIONES Y PANEL ADMINISTRATIVO -->
         <aside class="col-12 col-md-3 col-lg-2 d-flex flex-column gap-4 border-end border-light-subtle">
-            <div class="d-flex flex-column gap-2">
+            <c:if test="${sessionScope.id_rol == 7}"> 
+                <div class="d-flex flex-column gap-2">
+                
                 <hr class="border-secondary border-2 w-25 my-1">
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalCrearEvento">Crear evento</button> 
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalEditarEvento">Editar evento</button>
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalEliminarEvento">Eliminar evento</button>
-                <a href="${pageContext.request.contextPath}/BibliotecaServlet" class="btn btn-biblioteca-marino btn-balsamiq py-2 px-3 small mt-2">Biblioteca</a>
-            </div>
+                <a href="${pageContext.request.contextPath}/biblioteca.jsp" class="btn btn-biblioteca-marino btn-balsamiq py-2 px-3 small mt-2">Biblioteca</a>
+                </div>
+            
 
-            <div class="d-flex flex-column gap-2">
+                <div class="d-flex flex-column gap-2">
                 <hr class="border-secondary border-2 w-25 my-1">
                 <span class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 11px;">Panel administrativo</span>
                 <a href="${pageContext.request.contextPath}/UsuarioServlet?accion=listar" class="btn btn-success btn-balsamiq py-2 px-3 small">Gestionar usuarios</a>
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalGestionAreas">Gestionar áreas</button>
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalReportes">Reportes</button>
-            </div>
+                </div>
+            </c:if>\
         </aside>
 
         <!-- SECCIÓN CENTRAL: CALENDARIO INSTITUCIONAL -->
@@ -44,7 +48,7 @@
                     <span class="text-uppercase small">JULIO 2026</span>
                     <button class="btn btn-sm btn-light border-0 py-0">▶</button>
                 </div>
-                
+
                 <div class="card-body p-0">
                     <div class="row g-0 bg-light border-bottom border-dark text-muted fw-bold text-center py-1 small">
                         <div class="col">DO</div><div class="col">LU</div><div class="col">MA</div>
@@ -333,9 +337,11 @@
                 <button type="button" class="btn btn-link text-dark text-decoration-none w-50 m-0 py-2 rounded-0 fw-bold" data-bs-dismiss="modal" style="border-right: 2px solid #000;">
                     No
                 </button>
-                <a id="btnConfirmarEliminar" href="#" class="btn btn-link text-dark text-decoration-none w-50 m-0 py-2 rounded-0 fw-bold">
-                    Sí
-                </a>
+                <form id="formEliminar" action="${pageContext.request.contextPath}/ActividadesServlet" method="POST" class="w-50 m-0">
+                    <input type="hidden" name="accion" value="eliminar">
+                    <input type="hidden" name="id" value="">
+                    <button type="submit" class="btn btn-link text-dark text-decoration-none w-100 py-2 rounded-0 fw-bold">Sí</button>
+                </form>
             </div>
         </div>
     </div>
@@ -393,13 +399,13 @@
     
     //eliminar
     
-    document.getElementById("btnConfirmarEliminar").addEventListener("click", function (e) {
+    document.getElementById("formEliminar").addEventListener("submit", function (e) {
     if (!eventoSeleccionado) {
         e.preventDefault();
         alert("Primero selecciona un evento de la lista.");
         return;
     }
-    this.href = "${pageContext.request.contextPath}/ActividadesServlet?accion=eliminar&id=" + eventoSeleccionado.id;
+    this.querySelector('[name="id"]').value = eventoSeleccionado.id;
 });
 </script>
 

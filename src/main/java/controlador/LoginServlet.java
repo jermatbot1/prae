@@ -30,6 +30,7 @@ public class LoginServlet extends HttpServlet {
         String correo = request.getParameter("email");
         String contrasenia = request.getParameter("password");
 
+        // se busca el usuario que tenga ese correo y esa contrasena
         String sql = "SELECT id_usuario, nombres, apellidos, id_rol FROM usuarios WHERE correo = ? AND contrasenia = ?";
 
         // Corrección de sintaxis en el try-with-resources y validación de nulidad
@@ -43,19 +44,20 @@ public class LoginServlet extends HttpServlet {
                 pst.setString(1, correo);
                 pst.setString(2, contrasenia);
                 
-                try (ResultSet rs = pst.executeQuery()) {
+                try (ResultSet rs = pst.executeQuery()) { //correccion 1
+                    // si encontro el usuario se guardan sus datos en la sesion
                     if (rs.next()) {
-                        // Autenticación exitosa: Creamos la sesión del usuario
                         HttpSession session = request.getSession();
+                        request.changeSessionId();   // seguridad: id de sesión nuevo al iniciar sesión
                         session.setAttribute("id_usuario", rs.getInt("id_usuario"));
                         session.setAttribute("nombres", rs.getString("nombres"));
                         session.setAttribute("id_rol", rs.getInt("id_rol"));
-                        
-                        // Redirigir al Dashboard institucional según el análisis de pantallas
-                        response.sendRedirect(request.getContextPath () + "/dashboard.jsp");
+
+                        // Pasar por el servlet para que cargue los eventos
+                        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
                     } else {
-                        // Credenciales incorrectas: Redirigir de vuelta al index con error
-                        response.sendRedirect(request.getContextPath () + "login.jsp?error=CredencialesInvalidas");
+                        // Ojo con la "/" antes de login.jsp
+                        response.sendRedirect(request.getContextPath() + "/login.jsp?error=CredencialesInvalidas");
                     }
                 }
             }

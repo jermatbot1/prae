@@ -18,10 +18,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+
+// servlet de las actividades o eventos ambientales del prae
 @WebServlet(name = "ActividadesServlet", urlPatterns = {"/ActividadesServlet"})
+
 
 public class ActividadesServlet extends HttpServlet {
 
+    // el get es para listar las actividades en el dashboard
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -37,9 +42,6 @@ public class ActividadesServlet extends HttpServlet {
                 case "listar":
                     listarActividades(request, response);
                     break;
-                case "eliminar":
-                    eliminarActividad(request, response);
-                    break;
                 default:
                     listarActividades(request, response);
                     break;
@@ -49,6 +51,7 @@ public class ActividadesServlet extends HttpServlet {
         }
     }
 
+    // en el post llegan crear, editar y eliminar segun la accion
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -67,8 +70,11 @@ public class ActividadesServlet extends HttpServlet {
                 case "editar":
                     editarActividad(request, response);
                     break;
+                case "eliminar":
+                    eliminarActividad(request, response);
+                    break;
                 default:
-                    response.sendRedirect("ActividadesServlet?accion=listar");
+                    response.sendRedirect(request.getContextPath() + "/UsuarioServlet?accion=listar");
                     break;
             }
         } catch (SQLException | IllegalArgumentException e) {
@@ -76,6 +82,7 @@ public class ActividadesServlet extends HttpServlet {
         }
     }
 
+    // aqui se traen todas las actividades de la base de datos
     private void listarActividades(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException, SQLException {
         
@@ -89,6 +96,7 @@ public class ActividadesServlet extends HttpServlet {
             try (PreparedStatement pst = con.prepareStatement(sql);
                  ResultSet rs = pst.executeQuery()) {
                 
+                // cada actividad se guarda en un map y se mete a la lista
                 while (rs.next()) {
                     Map<String, Object> act = new HashMap<>();
                     act.put("id_actividad", rs.getInt("id_actividad"));
@@ -101,10 +109,12 @@ public class ActividadesServlet extends HttpServlet {
                 }
             }
         }
+        // se manda la lista al dashboard
         request.setAttribute("listaActividades", listaActividades);
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
     }
     
+    // saca el primer proyecto que haya para asociarle la actividad
     private int obtenerIdProyecto(Connection con) throws SQLException {
     String sql = "SELECT MIN(id_proyecto) FROM proyectos";
     try (PreparedStatement pst = con.prepareStatement(sql);
@@ -116,22 +126,28 @@ public class ActividadesServlet extends HttpServlet {
     throw new SQLException("No hay proyectos registrados. Crea uno en la tabla proyectos.");
 }
 
+    // aqui va la creacion de evento
     private void crearActividad(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException, SQLException {
         
         String titulo = request.getParameter("titulo");
         String descripcion = request.getParameter("descripcion");
         String fechaStr = request.getParameter("fechaInicio");
-        if (fechaStr == null || fechaStr.isEmpty()) {
-            fechaStr = request.getParameter("fecha");
+        Date fecha = parsearFecha(fechaStr);
+        // si la fecha viene mal se devuelve con error
+        if (fecha == null) {
+            response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar&error=FechaInvalida");
+            return;
         }
         String estado = request.getParameter("estado");
+        // si no mandan estado queda en pendiente
         if (estado == null || estado.trim().isEmpty()) {
             estado = "Pendiente";
         }
 
         String sql = "INSERT INTO actividades (nombre_actividad, descripcion, fecha_programada, estado, id_proyecto) VALUES (?, ?, ?, ?, ?)";
-
+        
+        
         try (Connection con = conexion.conectar()) {
             if (con == null)  {
                 throw new SQLException("No se pudo establecer la conexión con la base de datos.");
@@ -141,7 +157,7 @@ public class ActividadesServlet extends HttpServlet {
             try (PreparedStatement pst = con.prepareStatement(sql)) {
                 pst.setString(1, titulo);
                 pst.setString(2, descripcion);
-                pst.setDate(3, Date.valueOf(fechaStr));
+                pst.setDate(3, fecha);
                 pst.setString(4, estado);
                 pst.setInt(5, idProyecto);
                 pst.executeUpdate();
@@ -150,6 +166,7 @@ public class ActividadesServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
     }
 
+    // aqui se edita el evento
     private void editarActividad(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException, SQLException {
         
@@ -159,6 +176,7 @@ public class ActividadesServlet extends HttpServlet {
         String fechaStr = request.getParameter("fecha");
         String estado = request.getParameter("estado");
         
+        // sin id no se puede editar nada
         if (idStr == null || idStr.trim().isEmpty()) {
             throw new IllegalArgumentException("Falta el id del evento a editar.");
             }
@@ -169,28 +187,28 @@ public class ActividadesServlet extends HttpServlet {
         }
         
 
-        String sql = "UPDATE actividades SET nombre_actividad = ?, descripcion = ?, fecha_programada = ?, estado = ?, id_proyecto = ? WHERE id_actividad = ?";
+        String sql = "UPDATE actividades SET nombre_actividad = ?, descripcion = ?, fecha_programada = ?, estado = ? WHERE id_actividad = ?";
 
         try (Connection con = conexion.conectar()) {
             if (con == null) {
                 throw new SQLException("No se pudo establecer la conexión con la base de datos.");
             }
             
-            int idProyecto = obtenerIdProyecto(con);
+            
             
             try (PreparedStatement pst = con.prepareStatement(sql)) {
                 pst.setString(1, titulo);
                 pst.setString(2, descripcion);
                 pst.setDate(3, Date.valueOf(fechaStr));
                 pst.setString(4, estado);
-                pst.setInt(5, idProyecto);
-                pst.setInt(6, idActividad);
+                pst.setInt(5, idActividad);
                 pst.executeUpdate();
             }
         }
         response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
     }
 
+    // aqui se borra el evento por el id
     private void eliminarActividad(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException, SQLException {
         
@@ -209,5 +227,17 @@ public class ActividadesServlet extends HttpServlet {
             }
         }
         response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");;
+    }
+
+    // convierte el texto de la fecha a Date, si esta mal devuelve null
+    private Date parsearFecha(String s) {
+        if (s == null || s.isBlank()) {
+            return null;
+        }
+        try {
+            return Date.valueOf(s);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }

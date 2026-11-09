@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+// clase para conectarse a la base de datos de mysql, la usan todos los servlets
 public class conexion {
     
     // Parámetros basados en el volcado de la base de datos 'prae'

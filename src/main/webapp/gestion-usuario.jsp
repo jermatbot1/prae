@@ -9,7 +9,7 @@
         return;
     }
 %>
-<%@page contentType="gestion-usuario.jsp" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -46,6 +46,9 @@
 
         <main class="container my-5 flex-grow-1">
             <h2 class="text-center mb-5 fw-bold">Gestión de Usuarios</h2>
+            <c:if test="${param.error == 'CorreoExiste'}">
+                <div class="alert alert-danger rounded-0">No se creó el usuario: ese correo ya está registrado.</div>
+            </c:if>
 
             <div class="row">
                 <div class="col-12 col-md-4 d-flex flex-column gap-3">
@@ -75,20 +78,18 @@
                         <c:choose>
                             <c:when test="${not empty listaUsuarios}">
                                 <c:forEach var="usr" items="${listaUsuarios}">
-                                    <div class="d-flex align-items-center justify-content-between p-2 border-bottom border-dark border-opacity-25">
-                                        <span>${usr.nombre}</span>
-                                        <div class="d-flex gap-3"><span class="badge bg-prae rounded-0">${usr.rol}</span></div>
-                                        <button class="btn btn-sm btn-outline-dark rounded-0">Ver detalles</button>
+                                    <div class="d-flex align-items-center justify-content-between p-2 border-bottom usuario-item"
+                                         data-id="${usr.id_usuario}"
+                                         data-nombres="<c:out value='${usr.nombres}'/>"
+                                         data-apellidos="<c:out value='${usr.apellidos}'/>"
+                                         data-correo="<c:out value='${usr.correo}'/>"
+                                         data-rol="${usr.id_rol}" style="cursor:pointer">
+                                        <span><c:out value="${usr.nombre}"/></span>
+                                        <span class="badge bg-prae rounded-0"><c:out value="${usr.rol}"/></span>
                                     </div>
                                 </c:forEach>
                             </c:when>
-                            <c:otherwise>
-                                <div class="d-flex align-items-center justify-content-between p-2 border-bottom border-dark border-opacity-25">
-                                    <span>Docente_01</span>
-                                    <div class="d-flex gap-3"><span class="badge bg-prae rounded-0">Admin</span></div>
-                                    <button class="btn btn-sm btn-outline-dark rounded-0">Ver detalles</button>
-                                </div>
-                            </c:otherwise>
+                            
                         </c:choose>
                     </div>
                 </div>
@@ -202,22 +203,41 @@
 
                     <div class="modal-body p-5">
                         <h4 class="text-center mb-4">Editar Usuario</h4>
-                        <form action="${pageContext.request.contextPath}/UsuarioServlet?action=editar" method="POST">
+                        <form action="${pageContext.request.contextPath}/UsuarioServlet" method="POST">
+                            <input type="hidden" name="accion" value="editar">
+                            <input type="hidden" name="id_usuario">
                             <div class="row mb-3 align-items-center">
-                                <label class="col-sm-3 fw-bold">Nombre</label>
-                                <div class="col-sm-9"><input type="text" name="nombre" class="form-control rounded-0 border-dark" value="Docente_01"></div>
-                            </div>
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-sm-3 fw-bold">Rol</label>
-                                <div class="col-sm-9 d-flex flex-wrap gap-2 small">
-                                    <div class="form-check"><input class="form-check-input border-dark" type="checkbox" checked><label class="form-check-label">Admin</label></div>
-                                    <div class="form-check"><input class="form-check-input border-dark" type="checkbox"><label class="form-check-label">Docente</label></div>
+                                <label for="editNombres" class="col-sm-3 text-end fw-bold">Nombres</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="editNombres" name="nombres" class="form-control rounded-0 border-dark" required>
                                 </div>
                             </div>
+
                             <div class="row mb-3 align-items-center">
-                                <label class="col-sm-3 fw-bold">Correo</label>
-                                <div class="col-sm-9"><input type="email" name="correo" class="form-control rounded-0 border-dark" value="docente01@systemaprae.com"></div>
+                                <label for="editApellidos" class="col-sm-3 text-end fw-bold">Apellidos</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="editApellidos" name="apellidos" class="form-control rounded-0 border-dark" required>
+                                </div>
                             </div>
+
+                            <div class="row mb-3 align-items-center">
+                                <label for="editCorreo" class="col-sm-3 text-end fw-bold">Correo</label>
+                                <div class="col-sm-9">
+                                    <input type="email" id="editCorreo" name="correo" class="form-control rounded-0 border-dark" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3 align-items-center">
+                                <label for="editRol" class="col-sm-3 text-end fw-bold">Rol</label>
+                                <div class="col-sm-9">
+                                    <select id="editRol" name="id_rol" class="form-control rounded-0 border-dark">
+                                        <option value="7">Administrador</option>
+                                        <option value="8">Docente</option>
+                                        <option value="9">Estudiante</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="d-flex justify-content-center gap-3 mt-4">
                                 <button type="submit" class="btn btn-prae rounded-0 px-4">Actualizar cambios</button>
                                 <button type="button" class="btn btn-light border-dark rounded-0 px-4" data-bs-dismiss="modal">Cancelar</button>
@@ -245,12 +265,44 @@
                         <p class="small text-muted mb-4">Esta acción no se puede deshacer. Todos los datos asociados a este usuario serán eliminados permanentemente del sistema.</p>
 
                         <div class="d-flex justify-content-center gap-3">
-                            <a href="${pageContext.request.contextPath}/UsuarioServlet?action=eliminar" class="btn btn-danger rounded-0 px-4 fw-bold text-decoration-none">Sí, eliminar</a>
-                            <button type="button" class="btn btn-light border-dark rounded-0 px-4" data-bs-dismiss="modal">Cancelar</button>
+                            <form id="formEliminarUsuario" action="${pageContext.request.contextPath}/UsuarioServlet" method="POST">
+                                <input type="hidden" name="accion" value="eliminar">
+                                <input type="hidden" name="id">
+                                <button type="submit" class="btn btn-danger rounded-0 px-4 fw-bold">Sí, eliminar</button>
+                            </form>                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+<script>
+    let usuarioSel = null;
 
-        <jsp:include page="/includes/footer.jsp" />
+    document.querySelectorAll(".usuario-item").forEach(function (fila) {
+        fila.addEventListener("click", function () {
+            document.querySelectorAll(".usuario-item").forEach(f => f.classList.remove("bg-success-subtle"));
+            this.classList.add("bg-success-subtle");
+            usuarioSel = this.dataset;
+        });
+    });
+
+    document.getElementById("modalEditarUsuario").addEventListener("show.bs.modal", function (e) {
+        if (!usuarioSel) { e.preventDefault(); alert("Selecciona un usuario."); return; }
+        const f = this.querySelector("form");
+        f.querySelector('[name="id_usuario"]').value = usuarioSel.id;
+        f.querySelector('[name="nombres"]').value = usuarioSel.nombres;
+        f.querySelector('[name="apellidos"]').value = usuarioSel.apellidos;
+        f.querySelector('[name="correo"]').value = usuarioSel.correo;
+        f.querySelector('[name="id_rol"]').value = usuarioSel.rol;
+    });
+
+    document.getElementById("modalEliminarUsuario").addEventListener("show.bs.modal", function (e) {
+        if (!usuarioSel) { e.preventDefault(); alert("Selecciona un usuario."); return; }
+        document.querySelector('#formEliminarUsuario [name="id"]').value = usuarioSel.id;
+    });
+</script>
+
+
+<!-- Footer -->
+ 
+<jsp:include page="/includes/footer.jsp" />

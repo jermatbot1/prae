@@ -31,6 +31,7 @@
                     SystemaPRAE
                 </h1>
             </div>
+        
             <div class="bg-white text-dark border border-dark px-3 py-1 d-flex align-items-center gap-2 rounded shadow-sm dropdown">
                 <a href="#" class="text-dark text-decoration-none dropdown-toggle small fw-medium" data-bs-toggle="dropdown" aria-expanded="false">
                     Perfil: ${sessionScope.nombres != null ? sessionScope.nombres : 'Invitado'}
@@ -43,10 +44,10 @@
                     </li>
                 </ul>
             </div>
-
+        </div>
         <div class="container-fluid justify-content-end mt-3">
             <nav class="nav bg-white border border-dark text-dark small fw-medium">
-                <a href="${pageContext.request.contextPath}/dashboard.jsp" class="nav-link text-dark border-end border-dark py-1 px-3">Inicio</a>
+                <<a href="${pageContext.request.contextPath}/ActividadesServlet?accion=listar" class="nav-link text-dark border-end border-dark py-1 px-3">Inicio</a>
                 <a href="${pageContext.request.contextPath}/biblioteca.jsp#ppp" class="nav-link text-dark border-end border-dark py-1 px-3">PPP</a>
                 <a href="${pageContext.request.contextPath}/biblioteca.jsp#padres" class="nav-link text-dark border-end border-dark py-1 px-3">Escuela de padres</a>
                 <a href="${pageContext.request.contextPath}/biblioteca.jsp#ambiental" class="nav-link text-dark border-end border-dark py-1 px-3">Zona ambiental</a>

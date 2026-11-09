@@ -1,4 +1,5 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -28,6 +29,16 @@
         <div class="w-100" style="max-width: 550px;">
             <div class="card rounded-0 shadow-sm" style="border: 2px solid #000; background-color: #f1f1f1;">
                 <div class="card-body p-4 px-md-5">
+                    <c:choose>
+                        <c:when test="${param.error == 'CorreoExiste'}">
+                            <div class="alert alert-danger rounded-0 small py-2">
+                                Este correo ya está registrado. Usa otro correo o <a href="${pageContext.request.contextPath}/login.jsp">inicia sesión</a>.
+                            </div>
+                        </c:when>
+                        <c:when test="${param.error == 'ContrasenasNoCoinciden'}">
+                            <div class="alert alert-danger rounded-0 small py-2">Las contraseñas no coinciden.</div>
+                        </c:when>
+                    </c:choose>
 
                     <form action="${pageContext.request.contextPath}/UsuarioServlet?accion=registrar" method="POST">
 
@@ -98,6 +109,7 @@
         </div>
     </main>
 
+        
+//Footer
+                                
     <jsp:include page="/includes/footer.jsp" />
-</body>
-</html>
