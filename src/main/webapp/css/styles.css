@@ -19,7 +19,7 @@ body {
     border-bottom: 2px solid #000000;
 }
 
-/* Contenedor del Logo en Cruz (Balsamiq Style) */
+/* Contenedor del Logo en Cruz  */
 .logo-placeholder {
     width: 65px;
     height: 65px;
@@ -69,21 +69,21 @@ body {
 }
 
 .btn-success.btn-balsamiq {
-    background-color: #0E8C2F !important; /* Tu verde institucional exacto */
+    background-color: #0E8C2F !important; /*  verde institucional exacto */
     border-color: #000000 !important;     /* Mantiene el borde negro del prototipo */
     color: #ffffff !important;            /* Texto en blanco para que contraste */
 }
 
 /* Efecto visual cuando el usuario pasa el mouse por encima (Hover) */
 .btn-success.btn-balsamiq:hover {
-    background-color: #0c7a29 !important; /* Un verde un poco más oscuro al pasar el mouse */
+    background-color: #0c7a29 !important; /* Un verde un poco más oscuro al pasar el mouse  y parezca seleccion*/
     color: #ffffff !important;
 }
 /* ======================================================== */
 /* ESTILOS DEL FOOTER                                       */
 /* ======================================================== */
 
-/* Garantiza que el footer se empuje siempre al fondo de la pantalla */
+/* Garantiza que el footer este siempre al fondo de la pantalla */
 body {
     display: flex;
     flex-direction: column;
@@ -99,7 +99,7 @@ body {
     color: #0E8C2F !important;
 }
 
-/* Clase exclusiva para el botón Biblioteca (Azul Marino Normalista) */
+/* Clase exclusiva para el botón Biblioteca (Azul Marino ) */
 .btn-balsamiq.btn-biblioteca-marino {
     background-color: #0B2F64 !important; /* Azul marino institucional */
     border-color: #000000 !important;     /* Mantiene el borde negro del prototipo */

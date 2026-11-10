@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/includes/header.jsp" />
+<jsp:include page="/includes/header.jsp" /> <%-- Se incluye el encabezado reutilizable desde la carpeta includes --%>
 
 
 <main class="container-fluid my-4 flex-grow-1">
@@ -33,7 +33,7 @@
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalGestionAreas">Gestionar áreas</button>
                 <button class="btn btn-success btn-balsamiq py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#modalReportes">Reportes</button>
                 </div>
-            </c:if>\
+            </c:if>
         </aside>
 
         <!-- SECCIÓN CENTRAL: CALENDARIO INSTITUCIONAL -->
@@ -117,8 +117,10 @@
                     <c:choose>
                         <c:when test="${not empty listaActividades}">
                             <c:forEach var="act" items="${listaActividades}">
-                                <a href="${pageContext.request.contextPath}/ActividadesServlet?accion=listar&id=${act.id_actividad}"
+                                <%-- un clic selecciona el evento, doble clic abre el detalle --%>
+                                <a href="${pageContext.request.contextPath}/ActividadesServlet?accion=ver&id=${act.id_actividad}"
                                     class="text-decoration-none d-flex flex-column gap-1 evento-item"
+                                    title="Doble clic para ver el evento"
                                     data-id="${act.id_actividad}"
                                     data-titulo="<c:out value='${act.nombre_actividad}'/>"
                                     data-descripcion="<c:out value='${act.descripcion}'/>"
@@ -379,6 +381,19 @@
         if (item) {
             e.preventDefault();
             eventoSeleccionado = item.dataset;
+            // se marca el evento para que se vea cual esta seleccionado
+            document.querySelectorAll(".evento-item").forEach(function (el) {
+                el.classList.remove("evento-seleccionado");
+            });
+            item.classList.add("evento-seleccionado");
+        }
+    });
+
+    // con doble clic se abre el detalle del evento
+    document.addEventListener("dblclick", function (e) {
+        const item = e.target.closest(".evento-item");
+        if (item) {
+            window.location.href = item.getAttribute("href");
         }
     });
 

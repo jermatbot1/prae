@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ActividadesServlet extends HttpServlet {
 
-    // el get es para listar las actividades en el dashboard
+    // el get es para listar las actividades en el dashboard y para ver una sola
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -41,6 +41,9 @@ public class ActividadesServlet extends HttpServlet {
             switch (accion) {
                 case "listar":
                     listarActividades(request, response);
+                    break;
+                case "ver":
+                    verActividad(request, response);
                     break;
                 default:
                     listarActividades(request, response);
@@ -114,6 +117,55 @@ public class ActividadesServlet extends HttpServlet {
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
     }
     
+    // aqui se busca un solo evento por el id para verlo en detalle-evento.jsp
+    private void verActividad(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+
+        // si el id no llega o no es numero se devuelve al dashboard
+        int idActividad;
+        try {
+            idActividad = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
+            return;
+        }
+
+        String sql = "SELECT id_actividad, nombre_actividad, descripcion, fecha_programada, estado, id_proyecto "
+                + "FROM actividades WHERE id_actividad = ?";
+        Map<String, Object> act = null;
+
+        try (Connection con = conexion.conectar()) {
+            if (con == null) {
+                throw new SQLException("No se pudo establecer la conexión con la base de datos.");
+            }
+            try (PreparedStatement pst = con.prepareStatement(sql)) {
+                pst.setInt(1, idActividad);
+                try (ResultSet rs = pst.executeQuery()) {
+                    // si lo encuentra se guardan los datos en el map
+                    if (rs.next()) {
+                        act = new HashMap<>();
+                        act.put("id_actividad", rs.getInt("id_actividad"));
+                        act.put("nombre_actividad", rs.getString("nombre_actividad"));
+                        act.put("descripcion", rs.getString("descripcion"));
+                        act.put("fecha_programada", rs.getDate("fecha_programada"));
+                        act.put("estado", rs.getString("estado"));
+                        act.put("id_proyecto", rs.getInt("id_proyecto"));
+                    }
+                }
+            }
+        }
+
+        // si no existe ese evento tambien se devuelve al dashboard
+        if (act == null) {
+            response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
+            return;
+        }
+
+        // se manda el evento al jsp del detalle
+        request.setAttribute("actividad", act);
+        request.getRequestDispatcher("/detalle-evento.jsp").forward(request, response);
+    }
+
     // saca el primer proyecto que haya para asociarle la actividad
     private int obtenerIdProyecto(Connection con) throws SQLException {
     String sql = "SELECT MIN(id_proyecto) FROM proyectos";

@@ -19,7 +19,23 @@
         </div>
         
         <div class="card-body p-4 p-md-5">
-            
+
+            <!-- DATOS DEL EVENTO QUE MANDA EL SERVLET -->
+            <c:if test="${not empty actividad}">
+                <div class="mb-5 pb-3 border-bottom border-dark">
+                    <h4 class="fw-bold text-dark mb-2"><c:out value="${actividad.nombre_actividad}"/></h4>
+                    <p class="text-dark mb-3"><c:out value="${actividad.descripcion}"/></p>
+                    <div class="d-flex flex-wrap gap-4 small">
+                        <span><b>Fecha:</b> <c:out value="${actividad.fecha_programada}"/></span>
+                        <span><b>Estado:</b>
+                            <span class="px-2 py-1 rounded text-white" style="background-color: #0E8C2F;">
+                                <c:out value="${actividad.estado}"/>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </c:if>
+
             <!-- GALERÍA DE IMÁGENES DEL EVENTO -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5 justify-content-start">
                 
@@ -83,7 +99,7 @@
 
             <!-- BOTÓN DE NAVEGACIÓN HACIA ATRÁS -->
             <div class="d-flex justify-content-end mt-5 pt-3">
-                <a href="${pageContext.request.contextPath}/dashboard.jsp" class="text-decoration-none">
+                <a href="${pageContext.request.contextPath}/ActividadesServlet?accion=listar" class="text-decoration-none">
                     <button type="button" class="btn btn-balsamiq bg-white px-4 py-1.5 text-dark" style="font-size: 14px;">
                         ◀ Volver al Calendario
                     </button>
