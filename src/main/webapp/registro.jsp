@@ -35,7 +35,7 @@
                                 Este correo ya está registrado. Usa otro correo o <a href="${pageContext.request.contextPath}/login.jsp">inicia sesión</a>.
                             </div>
                         </c:when>
-                        <c:when test="${param.error == 'ContrasenasNoCoinciden'}">
+                        <c:when test="${param.error == 'ContraseniasNoCoinciden'}">
                             <div class="alert alert-danger rounded-0 small py-2">Las contraseñas no coinciden.</div>
                         </c:when>
                     </c:choose>

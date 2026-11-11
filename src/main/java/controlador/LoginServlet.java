@@ -54,7 +54,8 @@ public class LoginServlet extends HttpServlet {
                         session.setAttribute("id_rol", rs.getInt("id_rol"));
 
                         // Pasar por el servlet para que cargue los eventos
-                        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar");
+                        // login=ok hace que el dashboard muestre el mensaje de autenticacion satisfactoria
+                        response.sendRedirect(request.getContextPath() + "/ActividadesServlet?accion=listar&login=ok");
                     } else {
                         // Ojo con la "/" antes de login.jsp
                         response.sendRedirect(request.getContextPath() + "/login.jsp?error=CredencialesInvalidas");

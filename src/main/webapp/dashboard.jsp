@@ -11,6 +11,10 @@
 
 
 <main class="container-fluid my-4 flex-grow-1">
+    <%-- Mensaje que se muestra cuando el login fue correcto (LoginServlet envia login=ok) --%>
+    <c:if test="${param.login == 'ok'}">
+        <div class="alert alert-success rounded-0">Autenticación satisfactoria. Bienvenido, <c:out value="${sessionScope.nombres}"/>.</div>
+    </c:if>
     <div class="row g-4">
         
         <!-- BARRA LATERAL IZQUIERDA: ACCIONES Y PANEL ADMINISTRATIVO -->
